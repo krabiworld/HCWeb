@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Done page</title>
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<head th:replace="fragments/general :: head (${'Done'})">
+    <title></title>
 </head>
 <body>
-    <nav th:replace="nav :: hd (${'Done'})"></nav>
+    <nav th:replace="fragments/general :: nav (${'Done'})"></nav>
     <main class="position-absolute top-50 start-50 translate-middle">
         <p th:utext="${done}"></p>
     </main>
+    <footer th:replace="fragments/general :: footer"></footer>
 </body>
 </html>

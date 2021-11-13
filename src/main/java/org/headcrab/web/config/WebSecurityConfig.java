@@ -8,10 +8,12 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
 import javax.sql.DataSource;
 
 @Configuration
+@EnableJdbcHttpSession
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private final DataSource dataSource;
@@ -33,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
 			.authorizeRequests()
-				.antMatchers("/", "/error", "/done", "/recovery", "/passwordrecovery").permitAll()
+				.antMatchers("/", "/error", "/done", "/recovery").permitAll()
 				.antMatchers("/signup").anonymous()
 				.antMatchers("/welcome", "/account").authenticated()
 				.antMatchers("/admin").hasAuthority("ADMIN")

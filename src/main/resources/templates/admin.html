@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin page</title>
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<head th:replace="fragments/general :: head (${'Admin'})">
+    <title></title>
 </head>
 <body>
-    <nav th:replace="nav :: hd (${'Admin'})"></nav>
+    <nav th:replace="fragments/general :: nav (${'Admin'})"></nav>
     <main class="position-absolute top-50 start-50 translate-middle">
         <label class="fw-bold mb-3">Change User Role</label>
         <p th:if="${msg}" th:text="${msg}"></p>
@@ -47,5 +43,6 @@
             <input type="submit" value="OK" class="btn btn-primary">
         </form>
     </main>
+    <footer th:replace="fragments/general :: footer"></footer>
 </body>
 </html>

@@ -1,18 +1,19 @@
 package org.headcrab.web.util;
 
+import org.springframework.stereotype.Component;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.util.Properties;
 
-
+@Component
 public class DB {
-	public static Connection conn() throws Exception {
-		Properties properties = Utils.getProp("application.properties");
+	private static DataSource dataSource;
 
-		return DriverManager.getConnection(
-			properties.getProperty("spring.datasource.url"),
-			properties.getProperty("spring.datasource.username"),
-			properties.getProperty("spring.datasource.password")
-		);
+	public DB(DataSource dataSource) {
+		DB.dataSource = dataSource;
+	}
+
+	public static Connection conn() throws Exception {
+		return dataSource.getConnection();
     }
 }

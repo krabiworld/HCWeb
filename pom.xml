@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.headcrab</groupId>
 	<artifactId>headcrab</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.1</version>
 	<name>headcrab</name>
 	<description>Headcrab Web Site</description>
 	<properties>
@@ -36,6 +36,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-jdbc</artifactId>
+			<version>2.5.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
@@ -77,6 +82,7 @@
 				<version>3.0.3</version>
 				<configuration>
 					<jdkVersion>17</jdkVersion>
+					<appName>headcrab</appName>
 					<processTypes>
 						<web>java $JAVA_OPTS -Dserver.port=$PORT -cp target/classes:target/dependency/* org.headcrab.web.HeadcrabApplication</web>
 					</processTypes>
