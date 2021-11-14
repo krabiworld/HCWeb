@@ -13,13 +13,13 @@
         </div>
         <form th:action="@{/login}" method="post">
             <div class="form-floating mb-3">
-                <input id="floatingEmail"
+                <input id="floatingUsername"
                        type="text"
                        name="username"
                        required
                        class="form-control"
-                       placeholder="Email">
-                <label for="floatingEmail" class="form-label">Email</label>
+                       placeholder="Username">
+                <label for="floatingUsername" class="form-label">Username</label>
             </div>
             <div class="form-floating mb-3">
                 <input id="floatingPassword"
@@ -29,6 +29,13 @@
                        class="form-control"
                        placeholder="Password">
                 <label for="floatingPassword" class="form-label">Password</label>
+            </div>
+            <div class="form-check mb-3">
+                <input id="checkboxRememberMe"
+                       type="checkbox"
+                       class="form-check-input"
+                       name="remember-me">
+                <label class="form-check-label" for="checkboxRememberMe">Remember Me?</label>
             </div>
 
             <input type="submit" value="Log in" class="btn btn-primary">
