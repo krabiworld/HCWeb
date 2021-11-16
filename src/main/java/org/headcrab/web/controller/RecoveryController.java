@@ -75,7 +75,7 @@ public class RecoveryController {
 		));
 
 		if (!check.next()) {
-			model.addAttribute("error", "Token invalid");
+			model.addAttribute("error", "Token invalid.");
 			return "error";
 		}
 

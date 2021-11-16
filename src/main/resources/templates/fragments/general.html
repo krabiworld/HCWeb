@@ -1,13 +1,53 @@
 <!DOCTYPE html>
-<html lang="en"
-	  xmlns:th="https://www.thymeleaf.org"
-	  xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:fragment="head (title)">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title th:text="${title} + ' page'"></title>
-	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-	<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+	<title th:text="${title} + ' page - Headcrab'"></title>
+	<link href="/css/bootstrap.min.css" rel="stylesheet">
+	<script src="/js/bootstrap.bundle.min.js"></script>
+	<!-- Meta tags -->
+	<meta name="application-name" content="Headcrab">
+	<meta name="theme-color" content="#E69138">
+	<meta property="og:site_name" content="Headcrab">
+	<meta property="og:title" content="Headcrab - A very simple blog.">
+	<meta property="og:description" content="A simple site with authorization, registration, account management and admin panel.">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="/">
+	<meta property="og:image" content="/img/favicon/favicon-512.png">
+	<!-- Icons -->
+	<link type="image/png" sizes="16x16" rel="icon" href="/img/favicon/favicon-16.png">
+	<link type="image/png" sizes="32x32" rel="icon" href="/img/favicon/favicon-32.png">
+	<link type="image/png" sizes="96x96" rel="icon" href="/img/favicon/favicon-96.png">
+	<link type="image/png" sizes="120x120" rel="icon" href="/img/favicon/favicon-120.png">
+	<link type="image/png" sizes="192x192" rel="icon" href="/img/favicon/favicon-192.png">
+	<link sizes="57x57" rel="apple-touch-icon" href="/img/favicon/apple-touch-icon-57.png">
+	<link sizes="60x60" rel="apple-touch-icon" href="/img/favicon/apple-touch-icon-60.png">
+	<link sizes="72x72" rel="apple-touch-icon" href="/img/favicon/favicon-72.png">
+	<link sizes="76x76" rel="apple-touch-icon" href="/img/favicon/apple-touch-icon-76.png">
+	<link sizes="114x114" rel="apple-touch-icon" href="/img/favicon/apple-touch-icon-114.png">
+	<link sizes="120x120" rel="apple-touch-icon" href="/img/favicon/favicon-120.png">
+	<link sizes="144x144" rel="apple-touch-icon" href="/img/favicon/favicon-144.png">
+	<link sizes="152x152" rel="apple-touch-icon" href="/img/favicon/apple-touch-icon-152.png">
+	<link sizes="180x180" rel="apple-touch-icon" href="/img/favicon/apple-touch-icon-180.png">
+	<link color="#ffffff" rel="mask-icon" href="/img/favicon/safari.svg">
+	<meta name="msapplication-TileImage" content="/img/favicon/favicon-144.png">
+	<meta name="msapplication-square70x70logo" content="/img/favicon/mstile-70.png">
+	<meta name="msapplication-square150x150logo" content="/img/favicon/mstile-150.png">
+	<meta name="msapplication-square310x310logo" content="/img/favicon/mstile-310.png">
+	<meta name="msapplication-wide310x150logo" content="/img/favicon/mstile-310x150.png">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-config" content="/config/browserconfig.xml">
+	<link rel="manifest" href="/config/manifest.json">
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PM6TJBNQP6"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-PM6TJBNQP6');
+	</script>
 </head>
 <body>
     <nav th:fragment="nav (page)" class="navbar navbar-expand-lg navbar-light bg-light mb-3">
@@ -44,7 +84,7 @@
     </nav>
 
 	<footer th:fragment="footer" class="fixed-bottom py-2 text-muted text-center">
-		© 2021 Headcrab <a href="https://github.com/HeadcrabJ/HCWebSite">GitHub</a>
+		© 2021 Headcrab <a href="https://github.com/HeadcrabJ/HCWebSite">GitHub</a> Version: <span th:text="${@environment.getProperty('app.version')}"></span>
 	</footer>
 </body>
 </html>
