@@ -1,14 +1,21 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/general :: head (${'Home'})">
     <title></title>
 </head>
 <body>
     <nav th:replace="fragments/general :: nav (${'Home'})"></nav>
 	<main class="position-absolute top-50 start-50 translate-middle">
-        <h3>Welcome to the Headcrab website!</h3>
+        <h3>Welcome to the Headcrab blog!</h3>
         <a href="/welcome" sec:authorize="isAuthenticated()">To welcome page</a>
+        <div th:each="post : ${posts}" class="card mb-3">
+            <div class="card-body">
+                <h5 th:text="${post.title}" class="card-title"></h5>
+                <h6 th:text="${#dates.format(post.date, 'yyyy MMMM dd')} + ' by ' + ${post.user.username}" class="card-subtitle mb-2 text-muted"></h6>
+                <p th:text="${post.content}" class="card-text"></p>
+                <a th:href="'/post/' + ${post.id}" class="card-link">Open post</a>
+            </div>
+        </div>
     </main>
     <footer th:replace="fragments/general :: footer"></footer>
 </body>

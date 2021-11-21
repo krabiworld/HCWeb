@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments/general :: head (${'Post'})">
+    <title></title>
+</head>
+<body>
+    <nav th:replace="fragments/general :: nav (${'Post'})"></nav>
+    <main class="position-absolute top-50 start-50 translate-middle">
+        <h1 th:text="${post.title}"></h1>
+        <div>
+            <span th:text="${#dates.format(post.date, 'yyyy MMMM dd')} + ' by ' + ${post.user.username}" class="text-muted"></span>
+            <a th:if="${isOwner}" class="btn-link" th:href="'/post/edit/' + ${post.id}">Edit</a>
+            <a th:if="${isOwner}" class="btn-link" th:href="'/post/delete/' + ${post.id}">Delete</a>
+        </div>
+
+        <p th:text="${post.content}" class="card-text"></p>
+    </main>
+    <footer th:replace="fragments/general :: footer"></footer>
+</body>
+</html>
