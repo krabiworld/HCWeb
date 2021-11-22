@@ -1,5 +1,5 @@
 # HCWebSite
-A simple site with authorization, registration, account management and admin panel.
+A simple blog with authorization, registration, account management and admin panel.
 
 ## Tech
 - [Spring](https://spring.io/)
