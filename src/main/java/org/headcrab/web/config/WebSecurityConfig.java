@@ -35,10 +35,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
-				.antMatchers("/css/**", "/js/**", "/img/**", "/config/**").permitAll()
+				.antMatchers("/css/**", "/js/**").permitAll()
 				.antMatchers("/", "/error", "/done", "/recovery").permitAll()
 				.antMatchers("/signup").anonymous()
-				.antMatchers("/welcome", "/account").authenticated()
+				.antMatchers("/account", "/post/create").authenticated()
 				.antMatchers("/admin").hasAuthority("ADMIN")
 				.antMatchers("/mod").hasAnyAuthority("ADMIN", "MOD")
 				.and()

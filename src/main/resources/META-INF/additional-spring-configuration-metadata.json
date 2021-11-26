@@ -1,9 +1,0 @@
-{
-  "properties": [
-    {
-      "name": "app.version",
-      "type": "java.lang.Float",
-      "description": "Application version."
-    }
-  ]
-}

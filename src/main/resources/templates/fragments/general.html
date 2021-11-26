@@ -8,7 +8,7 @@
 	<script src="/js/bootstrap.bundle.min.js"></script>
 	<!-- Meta tags -->
 	<meta name="application-name" content="Headcrab">
-	<meta name="theme-color" content="#fcb103">
+	<meta name="theme-color" content="#f8f9fa">
 	<meta property="og:site_name" content="Headcrab">
 	<meta property="og:title" content="Headcrab - A very simple blog.">
 	<meta property="og:description" content="A simple site with authorization, registration, account management and admin panel.">
@@ -20,7 +20,7 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 	<link rel="manifest" href="/site.webmanifest">
-	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#f8f9fa">
 	<meta name="apple-mobile-web-app-title" content="Headcrab">
 	<meta name="application-name" content="Headcrab">
 	<meta name="msapplication-TileColor" content="#ba9113">
@@ -31,6 +31,7 @@
         <div class="container-fluid">
 			<a class="navbar-brand" href="/" th:text="${page} + ' page'"></a>
 			<div sec:authorize="isAuthenticated()" class="d-flex">
+				<a href="/post/create" class="btn btn-link">Create post</a>
 				<div class="dropdown">
 					<button class="btn btn-outline-secondary dropdown-toggle me-2" type="button" id="dropdownButton" data-bs-toggle="dropdown" aria-expanded="false">
 						<span sec:authentication="name"></span>

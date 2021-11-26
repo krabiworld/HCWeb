@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments/general :: head (${'Create post'})">
+    <title></title>
+</head>
+<body>
+    <nav th:replace="fragments/general :: nav (${'Create post'})"></nav>
+    <main class="position-absolute top-50 start-50 translate-middle">
+        <!--<p th:if="${msg}" th:text="${msg}"></p>-->
+        <form th:action="@{/post/create}" th:object="${post}" method="post">
+            <div class="form-floating mb-3">
+                <input id="floatingTitle"
+                       type="text"
+                       th:field="*{title}"
+                       required
+                       class="form-control"
+                       placeholder="Title">
+                <label for="floatingTitle" class="form-label">Title</label>
+            </div>
+            <div class="form-floating mb-3">
+                <textarea id="floatingContent"
+                          th:field="*{content}"
+                          required
+                          class="form-control"
+                          placeholder="Content">
+                </textarea>
+                <label for="floatingContent" class="form-label">Content</label>
+            </div>
+
+            <input type="submit" value="Create post" class="btn btn-primary">
+        </form>
+    </main>
+    <footer th:replace="fragments/general :: footer"></footer>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package org.headcrab.web.model;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,7 +11,7 @@ import java.util.Date;
 @Table(name = "posts")
 public class Post {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@Column(name = "title", nullable = false)
@@ -19,7 +20,9 @@ public class Post {
 	@Column(name = "content", nullable = false)
 	private String content;
 
-	@Column(name = "date", nullable = false)
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "date", nullable = false, updatable = false)
 	private Date date;
 
 	@ManyToOne

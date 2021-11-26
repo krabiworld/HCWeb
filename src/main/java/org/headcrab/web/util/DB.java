@@ -9,7 +9,7 @@ import java.sql.Connection;
 public class DB {
 	private static DataSource dataSource;
 
-	public DB(DataSource dataSource) {
+	DB(DataSource dataSource) {
 		DB.dataSource = dataSource;
 	}
 
