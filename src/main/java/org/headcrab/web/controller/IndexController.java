@@ -11,6 +11,7 @@ import java.util.Collection;
 
 @Controller
 public class IndexController {
+
 	private final PostService postService;
 
 	@Autowired
@@ -25,4 +26,5 @@ public class IndexController {
 		model.addAttribute("posts", posts);
 		return "index";
 	}
+
 }

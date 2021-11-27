@@ -24,6 +24,7 @@ class SignupData {
 
 @Controller
 public class SignupController {
+
     @GetMapping("/signup")
     public String signupPage(Model model) {
         model.addAttribute("signupData", new SignupData());
@@ -103,4 +104,5 @@ public class SignupController {
 		model.addAttribute("done", "Your account activated! <a href=\"/login\">Login</a>");
 		return "done";
 	}
+
 }

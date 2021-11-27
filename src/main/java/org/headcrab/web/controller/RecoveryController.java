@@ -26,6 +26,7 @@ class RecoveryDoneData {
 
 @Controller
 public class RecoveryController {
+
     @GetMapping("/recovery")
     public String restorePage(Model model) {
         model.addAttribute("recoveryData", new RecoveryData());
@@ -111,4 +112,5 @@ public class RecoveryController {
 		model.addAttribute("done", "You password changed. <a href='/login'>Login</a>");
 		return "done";
 	}
+
 }

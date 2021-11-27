@@ -20,6 +20,7 @@ class ChangeUserRoleData {
 
 @Controller
 public class AdminController {
+
 	@GetMapping("/admin")
 	public String adminPage(Model model) {
 		model.addAttribute("changeUserRoleData", new ChangeUserRoleData());
@@ -52,4 +53,5 @@ public class AdminController {
 		model.addAttribute("msg", "Done! New Role: " + data.getRole());
 		return "admin";
 	}
+
 }

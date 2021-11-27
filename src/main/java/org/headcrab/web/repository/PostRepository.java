@@ -9,7 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
+
 	Collection<Post> findAllByOrderByDate();
 
 	Optional<Post> findById(int id);
+
 }

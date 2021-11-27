@@ -1,7 +1,6 @@
 package org.headcrab.web.util;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.ui.Model;
 
 import java.util.UUID;
 

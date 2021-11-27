@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements PostService {
+
 	private final PostRepository postRepository;
 
 	@Autowired
@@ -36,4 +37,5 @@ public class PostServiceImpl implements PostService {
 	public void delete(Post post) {
 		postRepository.delete(post);
 	}
+
 }

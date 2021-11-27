@@ -5,8 +5,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class HeadcrabApplicationTests {
-	@Test
-	void contextLoad() {
 
-	}
+	@Test
+	void contextLoad() {}
+
 }

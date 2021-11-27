@@ -36,10 +36,16 @@ test {
 	useJUnitPlatform()
 }
 
+String filePath = 'build/libs/HCWebSite-' + version.toString() + '.jar'
+
 heroku {
 	appName = 'headcrab'
 	jdkVersion = 11
-	processTypes(web: 'java $JAVA_OPTS -Dserver.port=$PORT -jar build/libs/HCWebSite-' + version + '.jar')
+	includes = [filePath]
+	includeBuildDir = false
+	processTypes(
+			web: 'java $JAVA_OPTS -Dserver.port=$PORT -jar ' + filePath
+	)
 }
 
 processResources {

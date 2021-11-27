@@ -22,6 +22,7 @@ class ChangeUsernameData {
 
 @Controller
 public class AccountController {
+
 	@GetMapping("/account")
 	public String accountPage(Model model) {
 		model.addAttribute("changeUsernameData", new ChangeUsernameData());
@@ -60,4 +61,5 @@ public class AccountController {
 		attributes.addAttribute("msg", "Done! New username: " + data.getUsername());
 		return "redirect:/login";
 	}
+
 }

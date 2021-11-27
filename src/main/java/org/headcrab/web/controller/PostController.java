@@ -4,7 +4,6 @@ import org.headcrab.web.model.Post;
 import org.headcrab.web.model.User;
 import org.headcrab.web.service.PostService;
 import org.headcrab.web.service.UserService;
-import org.headcrab.web.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +17,7 @@ import java.util.Optional;
 
 @Controller
 public class PostController {
+
 	private final PostService postService;
 	private final UserService userService;
 
@@ -99,4 +99,5 @@ public class PostController {
 			return "error";
 		}
 	}
+
 }

@@ -8,6 +8,7 @@ import java.util.Optional;
 
 @Service
 public interface PostService {
+
 	Optional<Post> getById(int id);
 
 	Collection<Post> getAll();
@@ -15,4 +16,5 @@ public interface PostService {
 	Post save(Post post);
 
 	void delete(Post post);
+
 }

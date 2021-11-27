@@ -10,6 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name = "posts")
 public class Post {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -28,4 +29,5 @@ public class Post {
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
 	private User user;
+
 }

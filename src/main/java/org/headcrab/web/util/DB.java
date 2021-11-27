@@ -7,6 +7,7 @@ import java.sql.Connection;
 
 @Component
 public class DB {
+
 	private static DataSource dataSource;
 
 	DB(DataSource dataSource) {
@@ -16,4 +17,5 @@ public class DB {
 	public static Connection conn() throws Exception {
 		return dataSource.getConnection();
     }
+
 }
