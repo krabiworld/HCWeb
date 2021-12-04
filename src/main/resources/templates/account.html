@@ -6,7 +6,8 @@
 <body>
     <nav th:replace="fragments/general :: nav (${'Account'})"></nav>
     <main class="position-absolute top-50 start-50 translate-middle">
-        <form th:action="@{/account/changeusername}" th:object="${changeUsernameData}" method="post">
+        <p th:text="${msg}"></p>
+        <form th:action="@{/account/changeusername}" th:object="${user}" method="post">
             <label for="username" class="fw-bold">Change Username</label>
             <div class="input-group">
                 <input id="username"

@@ -34,7 +34,7 @@ public class PostController {
 			authUsername = principal.getName();
 		}
 
-		Optional<Post> optionalPost = this.postService.getById(id);
+		Optional<Post> optionalPost = postService.getById(id);
 
 		if (optionalPost.isPresent()) {
 			Post post = optionalPost.get();
@@ -51,8 +51,7 @@ public class PostController {
 
 	@GetMapping("/post/create")
 	public String createPost(Model model) {
-		Post post = new Post();
-		model.addAttribute("post", post);
+		model.addAttribute("post", new Post());
 		return "createPost";
 	}
 
@@ -63,11 +62,11 @@ public class PostController {
 			authUsername = principal.getName();
 		}
 
-		Optional<User> optionalUser = this.userService.findByUsername(authUsername);
+		Optional<User> optionalUser = userService.findByUsername(authUsername);
 
 		if (optionalUser.isPresent()) {
 			post.setUser(optionalUser.get());
-			this.postService.save(post);
+			postService.save(post);
 			return "redirect:/post/" + post.getId();
 		} else {
 			model.addAttribute("error", "User not found.");
@@ -82,7 +81,7 @@ public class PostController {
 			authUsername = principal.getName();
 		}
 
-		Optional<Post> optionalPost = this.postService.getById(id);
+		Optional<Post> optionalPost = postService.getById(id);
 
 		if (optionalPost.isPresent()) {
 			Post post = optionalPost.get();
@@ -90,7 +89,7 @@ public class PostController {
 				model.addAttribute("error", "You are not the owner of the post.");
 				return "error";
 			}
-			this.postService.delete(post);
+			postService.delete(post);
 
 			model.addAttribute("done", "Post deleted.");
 			return "done";

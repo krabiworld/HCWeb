@@ -1,57 +1,48 @@
 package org.headcrab.web.controller;
 
-import lombok.Data;
+import org.headcrab.web.model.User;
+import org.headcrab.web.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.sql.ResultSet;
-import java.sql.Statement;
-
-import static org.headcrab.web.util.DB.conn;
-
-@Data
-class ChangeUserRoleData {
-	private String username;
-	private String role;
-}
+import java.util.Optional;
 
 @Controller
 public class AdminController {
 
+	private final UserService userService;
+
+	@Autowired
+	public AdminController(UserService userService) {
+		this.userService = userService;
+	}
+
 	@GetMapping("/admin")
 	public String adminPage(Model model) {
-		model.addAttribute("changeUserRoleData", new ChangeUserRoleData());
+		model.addAttribute("user", new User());
 		return "admin";
 	}
 
 	@PostMapping("/admin/changeuserrole")
-	public String changeUserRolePageLogic(@ModelAttribute ChangeUserRoleData data, Model model) throws Exception {
-		Statement statement = conn().createStatement();
+	public String changeUserRolePageLogic(@ModelAttribute User data, Model model) {
+		Optional<User> optionalUser = userService.findByUsername(data.getUsername());
 
-		ResultSet check = statement.executeQuery(String.format("select role from users where username = '%s'", data.getUsername()));
+		if (optionalUser.isPresent()) {
+			User user = optionalUser.get();
+			user.setRole(data.getRole());
 
-		if (check.next()) {
-			if (check.getString("role").equals("ADMIN")) {
-				model.addAttribute("msg", "Error: You cannot give out a role higher or equal to your role.");
-				return "admin";
-			}
+			userService.save(user);
+
+			model.addAttribute("msg", "Done! New Role: " + data.getRole());
+			return "admin";
 		} else {
 			model.addAttribute("msg", "Error: Username not found.");
 			return "admin";
 		}
-
-		statement.executeUpdate(String.format(
-			"update users set role = '%s' where username = '%s'",
-			data.getRole(), data.getUsername()
-		));
-
-		statement.close();
-
-		model.addAttribute("msg", "Done! New Role: " + data.getRole());
-		return "admin";
 	}
 
 }

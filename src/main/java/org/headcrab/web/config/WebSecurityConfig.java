@@ -33,7 +33,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
-				.antMatchers("/css/**", "/js/**").permitAll()
 				.antMatchers("/", "/error", "/done", "/recovery").permitAll()
 				.antMatchers("/signup").anonymous()
 				.antMatchers("/account", "/post/create").authenticated()
@@ -44,8 +43,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.loginPage("/login")
 				.defaultSuccessUrl("/")
 				.permitAll().and()
-			.logout().and()
-			.rememberMe().and();
+			.logout().deleteCookies("JSESSIONID").and()
+			.rememberMe().useSecureCookie(true).and();
 	}
 
 }

@@ -7,7 +7,7 @@
     <nav th:replace="fragments/general :: nav (${'Sign up'})"></nav>
     <main class="position-absolute top-50 start-50 translate-middle">
         <p th:if="${msg}" th:text="${msg}"></p>
-        <form th:action="@{/signup}" th:object="${signupData}" method="post">
+        <form th:action="@{/signup}" th:object="${user}" method="post">
             <div class="form-floating mb-3">
                 <input id="floatingUsername"
                        type="text"

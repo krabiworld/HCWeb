@@ -1,7 +1,11 @@
 package org.headcrab.web.controller;
 
-import lombok.Data;
+import org.headcrab.web.model.Token;
+import org.headcrab.web.model.User;
+import org.headcrab.web.service.TokenService;
+import org.headcrab.web.service.UserService;
 import org.headcrab.web.util.Utils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,100 +13,85 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.sql.ResultSet;
-import java.sql.Statement;
-
-import static org.headcrab.web.util.DB.conn;
-
-@Data
-class SignupData {
-    private String username;
-    private String password;
-	private String retypePassword;
-    private String email;
-}
+import java.util.Optional;
 
 @Controller
 public class SignupController {
 
-    @GetMapping("/signup")
+	private final UserService userService;
+	private final TokenService tokenService;
+
+	@Autowired
+	public SignupController(UserService userService, TokenService tokenService) {
+		this.userService = userService;
+		this.tokenService = tokenService;
+	}
+
+	@GetMapping("/signup")
     public String signupPage(Model model) {
-        model.addAttribute("signupData", new SignupData());
+        model.addAttribute("user", new User());
         return "signup";
     }
 
     @PostMapping("/signup")
-    public String signupPageLogic(@ModelAttribute SignupData data, Model model) throws Exception {
-		if (!data.getPassword().equals(data.getRetypePassword())) {
+    public String signupPageLogic(@ModelAttribute User user, Model model) {
+		if (!user.getPassword().equals(user.getRetypePassword())) {
 			model.addAttribute("msg", "Error: Password mismatch.");
 			return "signup";
 		}
 
-		String newPassword = Utils.hashPassword(data.getPassword());
-		data.setPassword(newPassword);
+		user.setPassword(Utils.hashPassword(user.getPassword()));
 
-		Statement statement = conn().createStatement();
+		Optional<User> optionalUsername = this.userService.findByUsername(user.getUsername());
 
-        ResultSet check = statement.executeQuery(String.format(
-			"SELECT COUNT(*) FROM users WHERE username = '%s' or email = '%s'",
-			data.getUsername(), data.getEmail()
-		));
+		if (optionalUsername.isPresent()) {
+			model.addAttribute("msg", "Error: This username is already registered.");
+			return "signup";
+		}
 
-        if (check.next()) {
-            if (check.getInt(1) > 0) {
-                model.addAttribute("msg", "Error: This username or email is already registered.");
-                return "signup";
-            }
-        }
+		Optional<User> optionalEmail = this.userService.findByEmail(user.getEmail());
 
-        statement.executeUpdate(String.format(
-                "insert into users (username, password, email) values ('%s', '%s', '%s')",
-                data.getUsername(), data.getPassword(), data.getEmail()
-        ));
+		if (optionalEmail.isPresent()) {
+			model.addAttribute("msg", "Error: This email is already registered.");
+			return "signup";
+		}
 
-		ResultSet idQuery = statement.executeQuery(String.format(
-			"select id from users where email = '%s'", data.getEmail()
-		));
+		userService.save(user);
 
-		int id = 0;
-		String token = Utils.generateUUID();
+		String tokenUUID = Utils.generateUUID();
 
-		if (idQuery.next()) id = idQuery.getInt("id");
+		Token token = new Token();
+		token.setUser(user);
+		token.setToken(tokenUUID);
+		token.setType("signup");
 
-		statement.executeUpdate(String.format(
-			"insert into confirmation_tokens (id, token, type) values (%d, '%s', 'signup')",
-			id, token
-		));
+		tokenService.save(token);
 
-		statement.close();
+		Utils.sendEmail("Sign Up: http://localhost:8080/signup/done?id=" + token.getId() + "&token=" + tokenUUID);
 
-		Utils.sendEmail("Sign Up: http://localhost:8080/signup/done?" + id + "&token=" + token);
-
-        model.addAttribute("done", "Link send to email: " + data.getEmail());
+        model.addAttribute("done", "Link send to email: " + user.getEmail());
         return "done";
     }
 
 	@GetMapping("/signup/done")
-	public String signupDonePage(@RequestParam int id, @RequestParam String token, Model model) throws Exception {
-		Statement statement = conn().createStatement();
+	public String signupDonePage(@RequestParam int id, @RequestParam String token, Model model) {
+		Optional<Token> optionalToken = tokenService.findByIdAndTokenAndType(id, token, "signup");
 
-		ResultSet check = statement.executeQuery(String.format(
-			"select * from confirmation_tokens where id = %d and token = '%s' and type = 'signup'",
-			id, token
-		));
+		if (optionalToken.isPresent()) {
+			Token tokenObject = optionalToken.get();
 
-		if (!check.next()) {
+			User user = tokenObject.getUser();
+			user.setEnabled(true);
+
+			userService.save(user);
+			tokenService.delete(tokenObject);
+
+			model.addAttribute("toLogin", "Your account activated!");
+			return "done";
+		} else {
 			model.addAttribute("error", "Token invalid.");
 			return "error";
 		}
-
-		statement.executeUpdate("delete from confirmation_tokens where id = " + id);
-		statement.executeUpdate("update users set enabled = true where id = " + id);
-
-		statement.close();
-
-		model.addAttribute("done", "Your account activated! <a href=\"/login\">Login</a>");
-		return "done";
 	}
 
 }

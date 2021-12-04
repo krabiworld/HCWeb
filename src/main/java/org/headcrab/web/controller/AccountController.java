@@ -1,7 +1,8 @@
 package org.headcrab.web.controller;
 
-import lombok.Data;
-import org.springframework.security.core.Authentication;
+import org.headcrab.web.model.User;
+import org.headcrab.web.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,56 +11,52 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.sql.ResultSet;
-import java.sql.Statement;
-
-import static org.headcrab.web.util.DB.conn;
-
-@Data
-class ChangeUsernameData {
-	private String username;
-}
+import java.security.Principal;
+import java.util.Optional;
 
 @Controller
 public class AccountController {
 
+	private final UserService userService;
+
+	@Autowired
+	public AccountController(UserService userService) {
+		this.userService = userService;
+	}
+
 	@GetMapping("/account")
 	public String accountPage(Model model) {
-		model.addAttribute("changeUsernameData", new ChangeUsernameData());
+		model.addAttribute("user", new User());
 		return "account";
 	}
 
 	@PostMapping("/account/changeusername")
-	public String changeUsernamePageLogic(@ModelAttribute ChangeUsernameData data,
-										  Model model,
-										  RedirectAttributes attributes,
-										  Authentication authentication) throws Exception {
-		Statement statement = conn().createStatement();
+	public String changeUsernamePageLogic(@ModelAttribute User user, Model model,
+										  RedirectAttributes attributes, Principal principal) {
+		Optional<User> optionalUser = userService.findByUsername(user.getUsername());
 
-		ResultSet check = statement.executeQuery(String.format(
-			"select count(username) from users where username = '%s'", data.getUsername()
-		));
+		if (optionalUser.isEmpty()) {
+			String username = principal.getName();
 
-		if (check.next()) {
-			if (check.getInt(1) > 0) {
-				model.addAttribute("msg", "Error: This username already exists in the database.");
+			Optional<User> optionalUserObject = userService.findByUsername(username);
+
+			if (optionalUserObject.isEmpty()) {
+				model.addAttribute("msg", "Error: You are not authorized.");
 				return "account";
 			}
+
+			User userObject = optionalUserObject.get();
+			userObject.setUsername(user.getUsername());
+			userService.save(userObject);
+
+			SecurityContextHolder.clearContext();
+
+			attributes.addAttribute("msg", "Done! New username: " + user.getUsername());
+			return "redirect:/login";
+		} else {
+			model.addAttribute("msg", "Error: This username already exists in the database.");
+			return "account";
 		}
-
-		String username = authentication.getName();
-
-		statement.executeUpdate(String.format(
-			"update users set username = '%s' where username = '%s'",
-			data.getUsername(), username
-		));
-
-		statement.close();
-
-		SecurityContextHolder.getContext().setAuthentication(null);
-
-		attributes.addAttribute("msg", "Done! New username: " + data.getUsername());
-		return "redirect:/login";
 	}
 
 }

@@ -8,7 +8,7 @@
     <main class="position-absolute top-50 start-50 translate-middle">
         <label class="fw-bold mb-3">Change User Role</label>
         <p th:if="${msg}" th:text="${msg}"></p>
-        <form th:action="@{/admin/changeuserrole}" th:object="${changeUserRoleData}" method="post">
+        <form th:action="@{/admin/changeuserrole}" th:object="${user}" method="post">
             <div class="form-floating mb-3">
                 <input id="floatingUsername"
                        type="text"

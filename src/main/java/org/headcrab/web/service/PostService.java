@@ -13,7 +13,7 @@ public interface PostService {
 
 	Collection<Post> getAll();
 
-	Post save(Post post);
+	void save(Post post);
 
 	void delete(Post post);
 
