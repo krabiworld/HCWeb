@@ -25,7 +25,7 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public Collection<Post> getAll() {
-		return postRepository.findAllByOrderByDate();
+		return postRepository.findAllByOrderByDateDesc();
 	}
 
 	@Override

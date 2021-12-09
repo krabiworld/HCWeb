@@ -7,15 +7,16 @@ import org.headcrab.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Optional;
 
 @Controller
+@SessionAttributes("post")
 public class PostController {
 
 	private final PostService postService;
@@ -50,28 +51,29 @@ public class PostController {
 	}
 
 	@GetMapping("/post/create")
-	public String createPost(Model model) {
-		model.addAttribute("post", new Post());
-		return "createPost";
-	}
-
-	@PostMapping("/post/create")
-	public String createPostLogic(@ModelAttribute Post post, Model model, Principal principal) {
-		String authUsername = "";
-		if (principal != null) {
-			authUsername = principal.getName();
-		}
-
-		Optional<User> optionalUser = userService.findByUsername(authUsername);
+	public String createPost(Model model, Principal principal) {
+		Optional<User> optionalUser = userService.findByUsername(principal.getName());
 
 		if (optionalUser.isPresent()) {
+			Post post = new Post();
 			post.setUser(optionalUser.get());
-			postService.save(post);
-			return "redirect:/post/" + post.getId();
+			model.addAttribute("post", post);
+			return "createPost";
 		} else {
 			model.addAttribute("error", "User not found.");
 			return "error";
 		}
+	}
+
+	@PostMapping("/post/create")
+	public String createPostLogic(@Valid @ModelAttribute Post post, BindingResult bindingResult, SessionStatus status) {
+		if (bindingResult.hasErrors()) {
+			return "createPost";
+		}
+
+		postService.save(post);
+		status.setComplete();
+		return "redirect:/post/" + post.getId();
 	}
 
 	@GetMapping("/post/delete/{id}")

@@ -8,14 +8,15 @@ import org.headcrab.web.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
+@SessionAttributes("user")
 public class SignupController {
 
 	private final UserService userService;
@@ -34,25 +35,28 @@ public class SignupController {
     }
 
     @PostMapping("/signup")
-    public String signupPageLogic(@ModelAttribute User user, Model model) {
+    public String signupPageLogic(@Valid @ModelAttribute User user, BindingResult bindingResult, RedirectAttributes attributes) {
 		if (!user.getPassword().equals(user.getRetypePassword())) {
-			model.addAttribute("msg", "Error: Password mismatch.");
-			return "signup";
+			//model.addAttribute("msg", "Error: Password mismatch.");
+			//return "signup";
+			bindingResult.rejectValue("retypePassword", "error.retypePassword", "Password mismatch.");
 		}
 
 		user.setPassword(Utils.hashPassword(user.getPassword()));
 
-		Optional<User> optionalUsername = this.userService.findByUsername(user.getUsername());
-
-		if (optionalUsername.isPresent()) {
-			model.addAttribute("msg", "Error: This username is already registered.");
-			return "signup";
+		if (userService.findByUsername(user.getUsername()).isPresent()) {
+			//model.addAttribute("msg", "Error: This username is already registered.");
+			//return "signup";
+			bindingResult.rejectValue("username", "error.username", "This username is already registered.");
 		}
 
-		Optional<User> optionalEmail = this.userService.findByEmail(user.getEmail());
+		if (userService.findByEmail(user.getEmail()).isPresent()) {
+			//model.addAttribute("msg", "Error: This email is already registered.");
+			//return "signup";
+			bindingResult.rejectValue("email", "error.email", "This email is already registered.");
+		}
 
-		if (optionalEmail.isPresent()) {
-			model.addAttribute("msg", "Error: This email is already registered.");
+		if (bindingResult.hasErrors()) {
 			return "signup";
 		}
 
@@ -69,8 +73,9 @@ public class SignupController {
 
 		Utils.sendEmail("Sign Up: http://localhost:8080/signup/done?id=" + token.getId() + "&token=" + tokenUUID);
 
-        model.addAttribute("done", "Link send to email: " + user.getEmail());
-        return "done";
+        //model.addAttribute("done", "Link send to email: " + user.getEmail());
+		attributes.addAttribute("done", "Link send to email: " + user.getEmail());
+        return "redirect:/done";
     }
 
 	@GetMapping("/signup/done")

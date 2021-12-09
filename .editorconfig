@@ -1,11 +1,15 @@
 root = true
 
-[*.java]
+[**]
 charset = utf-8
-indent_size = tab
 indent_style = tab
-tab_width = 4
-end_of_line = crlf
+end_of_line = lf
 insert_final_newline = true
+
+[**.java]
+tab_width = 4
 trim_trailing_whitespace = true
-max_line_length = 130
+max_line_length = 120
+
+[**.html]
+tab_width = 2

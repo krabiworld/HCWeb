@@ -16,6 +16,7 @@
                        class="form-control"
                        placeholder="Username">
                 <label for="floatingUsername" class="form-label">Username</label>
+								<div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color: #d30000;"></div>
             </div>
             <div class="form-floating mb-3">
                 <input id="floatingPassword"
@@ -25,6 +26,7 @@
                        class="form-control"
                        placeholder="Password">
                 <label for="floatingPassword" class="form-label">Password</label>
+								<div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: #d30000;"></div>
             </div>
             <div class="form-floating mb-3">
                 <input id="floatingRetypePassword"
@@ -34,6 +36,7 @@
                        class="form-control"
                        placeholder="Retype Password">
                 <label for="floatingRetypePassword" class="form-label">Retype Password</label>
+								<div th:if="${#fields.hasErrors('retypePassword')}" th:errors="*{retypePassword}" style="color: #d30000;"></div>
             </div>
             <div class="form-floating mb-3">
                 <input id="floatingEmail"
@@ -43,6 +46,7 @@
                        class="form-control"
                        placeholder="Email">
                 <label for="floatingEmail" class="form-label">Email</label>
+								<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: #d30000;"></div>
             </div>
 
             <input type="submit" value="Sign up" class="btn btn-primary">
