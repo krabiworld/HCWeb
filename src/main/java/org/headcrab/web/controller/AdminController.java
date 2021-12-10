@@ -38,11 +38,10 @@ public class AdminController {
 			userService.save(user);
 
 			model.addAttribute("msg", "Done! New Role: " + data.getRole());
-			return "admin";
 		} else {
 			model.addAttribute("msg", "Error: Username not found.");
-			return "admin";
 		}
+		return "admin";
 	}
 
 }

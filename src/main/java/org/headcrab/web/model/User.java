@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 
@@ -34,7 +35,7 @@ public class User implements UserDetails {
 	@Length(message = "Please enter more than 8 characters.", min = 8)
 	private String retypePassword;
 
-	@Length(message = "Please enter more than 4 characters.", min = 4)
+	@Email(message = "Please enter valid email.")
 	@NotEmpty(message = "Please enter email.")
 	@Column(name = "email", nullable = false)
 	private String email;

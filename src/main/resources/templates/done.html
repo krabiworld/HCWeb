@@ -7,6 +7,7 @@
     <nav th:replace="fragments/general :: nav (${'Done'})"></nav>
     <main class="position-absolute top-50 start-50 translate-middle">
         <p th:text="${done}"></p>
+				<p th:if="${param.msg}" th:text="${param.msg[0]}"></p>
         <p th:if="${toLogin}"><span th:text="${toLogin}"></span> <a href="/login">Login</a></p>
     </main>
     <footer th:replace="fragments/general :: footer"></footer>

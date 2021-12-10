@@ -18,19 +18,20 @@ repositories {
 	mavenCentral()
 }
 
+val springVersion: String = "2.6.1"
+
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-jdbc")
-	implementation("org.springframework.boot:spring-boot-starter-security")
-	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("org.springframework.boot:spring-boot-starter-validation")
-	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
-	compileOnly("org.projectlombok:lombok")
-	runtimeOnly("org.postgresql:postgresql")
-	annotationProcessor("org.projectlombok:lombok")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.springframework.security:spring-security-test")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springVersion")
+	implementation("org.springframework.boot:spring-boot-starter-security:$springVersion")
+	implementation("org.springframework.boot:spring-boot-starter-thymeleaf:$springVersion")
+	implementation("org.springframework.boot:spring-boot-starter-web:$springVersion")
+	implementation("org.springframework.boot:spring-boot-starter-validation:$springVersion")
+	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE")
+	compileOnly("org.projectlombok:lombok:1.18.22")
+	runtimeOnly("org.postgresql:postgresql:42.3.1")
+	annotationProcessor("org.projectlombok:lombok:1.18.22")
+	testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
+	testImplementation("org.springframework.security:spring-security-test:5.5.1")
 }
 
 tasks.withType<Test> {

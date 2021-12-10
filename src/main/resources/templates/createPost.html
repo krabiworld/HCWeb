@@ -15,7 +15,7 @@
 											 class="form-control"
 											 placeholder="Title">
 								<label for="floatingTitle" class="form-label">Title</label>
-								<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color: #d30000;"></div>
+								<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger"></div>
 						</div>
 						<div class="form-floating mb-3">
 								<textarea id="floatingContent"
@@ -25,7 +25,7 @@
 													placeholder="Content">
 								</textarea>
 								<label for="floatingContent" class="form-label">Content</label>
-								<div th:if="${#fields.hasErrors('content')}" th:errors="*{content}" style="color: #d30000;"></div>
+								<div th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="text-danger"></div>
 						</div>
 
 					<input type="submit" value="Create post" class="btn btn-primary">

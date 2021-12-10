@@ -9,12 +9,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.Optional;
 
 @Controller
+@SessionAttributes("user")
 public class AccountController {
 
 	private final UserService userService;
@@ -25,29 +27,24 @@ public class AccountController {
 	}
 
 	@GetMapping("/account")
-	public String accountPage(Model model) {
-		model.addAttribute("user", new User());
-		return "account";
+	public String accountPage(Model model, Principal principal) {
+		Optional<User> optionalUser = userService.findByUsername(principal.getName());
+
+		if (optionalUser.isPresent()) {
+			model.addAttribute("user", optionalUser.get());
+			return "account";
+		} else {
+			model.addAttribute("error", "User not found.");
+			return "error";
+		}
 	}
 
 	@PostMapping("/account/changeusername")
-	public String changeUsernamePageLogic(@ModelAttribute User user, Model model,
-										  RedirectAttributes attributes, Principal principal) {
+	public String changeUsernamePageLogic(@ModelAttribute User user, Model model, RedirectAttributes attributes) {
 		Optional<User> optionalUser = userService.findByUsername(user.getUsername());
 
 		if (optionalUser.isEmpty()) {
-			String username = principal.getName();
-
-			Optional<User> optionalUserObject = userService.findByUsername(username);
-
-			if (optionalUserObject.isEmpty()) {
-				model.addAttribute("msg", "Error: You are not authorized.");
-				return "account";
-			}
-
-			User userObject = optionalUserObject.get();
-			userObject.setUsername(user.getUsername());
-			userService.save(userObject);
+			userService.save(user);
 
 			SecurityContextHolder.clearContext();
 

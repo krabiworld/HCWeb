@@ -37,22 +37,16 @@ public class SignupController {
     @PostMapping("/signup")
     public String signupPageLogic(@Valid @ModelAttribute User user, BindingResult bindingResult, RedirectAttributes attributes) {
 		if (!user.getPassword().equals(user.getRetypePassword())) {
-			//model.addAttribute("msg", "Error: Password mismatch.");
-			//return "signup";
 			bindingResult.rejectValue("retypePassword", "error.retypePassword", "Password mismatch.");
 		}
 
 		user.setPassword(Utils.hashPassword(user.getPassword()));
 
 		if (userService.findByUsername(user.getUsername()).isPresent()) {
-			//model.addAttribute("msg", "Error: This username is already registered.");
-			//return "signup";
 			bindingResult.rejectValue("username", "error.username", "This username is already registered.");
 		}
 
 		if (userService.findByEmail(user.getEmail()).isPresent()) {
-			//model.addAttribute("msg", "Error: This email is already registered.");
-			//return "signup";
 			bindingResult.rejectValue("email", "error.email", "This email is already registered.");
 		}
 
@@ -73,8 +67,7 @@ public class SignupController {
 
 		Utils.sendEmail("Sign Up: http://localhost:8080/signup/done?id=" + token.getId() + "&token=" + tokenUUID);
 
-        //model.addAttribute("done", "Link send to email: " + user.getEmail());
-		attributes.addAttribute("done", "Link send to email: " + user.getEmail());
+        attributes.addAttribute("msg", "Link send to email: " + user.getEmail());
         return "redirect:/done";
     }
 

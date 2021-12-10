@@ -78,16 +78,11 @@ public class PostController {
 
 	@GetMapping("/post/delete/{id}")
 	public String deletePost(@PathVariable int id, Model model, Principal principal) {
-		String authUsername = "";
-		if (principal != null) {
-			authUsername = principal.getName();
-		}
-
 		Optional<Post> optionalPost = postService.getById(id);
 
 		if (optionalPost.isPresent()) {
 			Post post = optionalPost.get();
-			if (!post.getUser().getUsername().equals(authUsername)) {
+			if (!post.getUser().getUsername().equals(principal.getName())) {
 				model.addAttribute("error", "You are not the owner of the post.");
 				return "error";
 			}
