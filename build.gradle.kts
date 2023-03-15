@@ -27,9 +27,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web:$springVersion")
 	implementation("org.springframework.boot:spring-boot-starter-validation:$springVersion")
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE")
-	compileOnly("org.projectlombok:lombok:1.18.22")
+	compileOnly("org.projectlombok:lombok:1.18.26")
 	runtimeOnly("org.postgresql:postgresql:42.3.1")
-	annotationProcessor("org.projectlombok:lombok:1.18.22")
+	annotationProcessor("org.projectlombok:lombok:1.18.26")
 	testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
 	testImplementation("org.springframework.security:spring-security-test:5.5.1")
 }
