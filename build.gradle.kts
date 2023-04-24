@@ -31,7 +31,7 @@ dependencies {
 	runtimeOnly("org.postgresql:postgresql:42.3.1")
 	annotationProcessor("org.projectlombok:lombok:1.18.22")
 	testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
-	testImplementation("org.springframework.security:spring-security-test:5.5.1")
+	testImplementation("org.springframework.security:spring-security-test:6.0.3")
 }
 
 tasks.withType<Test> {
